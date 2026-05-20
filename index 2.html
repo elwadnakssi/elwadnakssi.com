@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patisserie Atelier Marrakech | Reservation Gateaux sur Mesure</title>
+  <meta name="description" content="Reserve your custom boutique cake in Marrakech." />
+  <meta name="theme-color" content="#f6e7d4" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sable: #f6e7d4;
+      --caramel: #8f5f3e;
+      --caramel-light: rgba(143,95,62,0.18);
+      --cocoa: #3f2a22;
+      --blush: #f7d6cf;
+      --mint: #deefe4;
+      --paper: #fffcf8;
+      --ink: #2b1f1a;
+    }
+
+    html, body {
+      height: 100%; width: 100%;
+      overflow: hidden;
+      font-family: "Manrope", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 5% 8%, rgba(247,214,207,0.55) 0%, transparent 38%),
+        radial-gradient(circle at 88% 92%, rgba(222,239,228,0.5) 0%, transparent 40%),
+        linear-gradient(150deg, #fffcfa 0%, #fff5ec 100%);
+    }
+
+    h1, h2, h3, h4 {
+      font-family: "Cormorant Garamond", serif;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── LAYOUT ── */
+    .layout {
+      display: grid;
+      height: 100vh;
+      width: 100vw;
+      /* desktop: gallery left 60%, form right 40% */
+      grid-template-columns: 1fr;
+      grid-template-rows: 22vh 1fr;
+    }
+
+    @media (min-width: 1024px) {
+      .layout {
+        grid-template-columns: 3fr 2fr;
+        grid-template-rows: 1fr;
+      }
+    }
+
+    /* ── GALLERY PANEL ── */
+    .gallery-panel {
+      position: relative;
+      overflow: hidden;
+      padding: 14px 14px 10px;
+    }
+
+    @media (min-width: 1024px) {
+      .gallery-panel { padding: 22px; }
+    }
+
+    .gallery-panel .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid rgba(143,95,62,0.3);
+      background: rgba(255,255,255,0.88);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--caramel);
+      margin-bottom: 6px;
+    }
+
+    .gallery-panel h1 {
+      font-size: clamp(1.3rem, 3vw, 2.6rem);
+      line-height: 1.15;
+      color: var(--cocoa);
+      max-width: 520px;
+    }
+
+    .gallery-panel .subtitle {
+      font-size: 11px;
+      color: rgba(63,42,34,0.75);
+      margin-top: 4px;
+      max-width: 400px;
+    }
+
+    /* Mobile: horizontal strip */
+    .img-strip {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 6px;
+      height: calc(100% - 70px);
+      margin-top: 8px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .img-strip img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+      transition: transform 0.6s ease;
+    }
+    .img-strip img:hover { transform: scale(1.04); }
+
+    /* Desktop: mosaic */
+    .img-mosaic {
+      display: none;
+    }
+
+    @media (min-width: 1024px) {
+      .img-strip { display: none; }
+      .img-mosaic {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        grid-template-rows: repeat(6, 1fr);
+        gap: 8px;
+        height: calc(100% - 100px);
+        margin-top: 12px;
+      }
+      .mosaic-main {
+        grid-column: 1 / 7; grid-row: 1 / 7;
+        border-radius: 22px; overflow: hidden;
+        box-shadow: 0 22px 55px -28px rgba(63,42,34,0.4);
+      }
+      .mosaic-tr {
+        grid-column: 7 / 11; grid-row: 1 / 4;
+        border-radius: 18px; overflow: hidden;
+        box-shadow: 0 14px 35px -18px rgba(63,42,34,0.35);
+      }
+      .mosaic-bl {
+        grid-column: 7 / 9; grid-row: 4 / 7;
+        border-radius: 18px; overflow: hidden;
+        box-shadow: 0 14px 35px -18px rgba(63,42,34,0.3);
+      }
+      .mosaic-br {
+        grid-column: 9 / 11; grid-row: 4 / 7;
+        border-radius: 18px; overflow: hidden;
+        box-shadow: 0 14px 35px -18px rgba(63,42,34,0.3);
+      }
+      .img-mosaic img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        transition: transform 0.7s ease;
+      }
+      .img-mosaic div:hover img { transform: scale(1.05); }
+    }
+
+    /* ── FORM PANEL ── */
+    .form-panel {
+      position: relative;
+      background: rgba(255,252,248,0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(143,95,62,0.15);
+      border-radius: 24px 24px 0 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 10;
+      padding: 16px 14px 14px;
+      margin-top: -4px;
+    }
+
+    @media (min-width: 1024px) {
+      .form-panel {
+        border-top: none;
+        border-left: 1px solid rgba(143,95,62,0.15);
+        border-radius: 0;
+        padding: 22px 22px 18px;
+        margin-top: 0;
+      }
+    }
+
+    /* drag pill */
+    .drag-pill {
+      width: 44px; height: 5px;
+      background: rgba(143,95,62,0.28);
+      border-radius: 99px;
+      margin: 0 auto 12px;
+    }
+    @media (min-width: 1024px) { .drag-pill { display: none; } }
+
+    .form-header { margin-bottom: 14px; }
+
+    .form-header h2 {
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      color: var(--cocoa);
+      line-height: 1.1;
+    }
+
+    .form-header p {
+      font-size: 11px;
+      color: rgba(63,42,34,0.7);
+      margin-top: 3px;
+    }
+
+    .price-badge {
+      display: inline-block;
+      background: var(--mint);
+      border-radius: 10px;
+      padding: 5px 10px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--cocoa);
+      margin-top: 6px;
+    }
+
+    /* ── PROGRESS BAR ── */
+    .progress-bar-wrap {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 14px;
+    }
+
+    .progress-seg {
+      flex: 1; height: 4px;
+      border-radius: 99px;
+      background: rgba(143,95,62,0.15);
+      transition: background 0.35s ease;
+    }
+    .progress-seg.done { background: var(--caramel); }
+    .progress-seg.active { background: var(--caramel); opacity: 0.6; }
+
+    /* ── WIZARD ── */
+    .wizard-body { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
+    .step-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(143,95,62,0.8);
+      margin-bottom: 4px;
+    }
+
+    .step-question {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+      color: var(--cocoa);
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+
+    /* options grid */
+    .options-grid {
+      display: grid;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .options-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+    .options-grid.cols-1 { grid-template-columns: 1fr; }
+
+    .opt-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1.5px solid var(--caramel-light);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: white;
+      cursor: pointer;
+      text-align: left;
+      font-family: "Manrope", sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cocoa);
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.15s;
+      width: 100%;
+    }
+
+    .opt-btn:hover {
+      border-color: var(--caramel);
+      background: #fff8f2;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px -10px rgba(63,42,34,0.3);
+    }
+
+    .opt-btn.selected {
+      border-color: var(--caramel);
+      background: linear-gradient(145deg, #fff4e7, #ffeede);
+      box-shadow: 0 10px 28px -14px rgba(63,42,34,0.55);
+    }
+
+    .opt-icon {
+      font-size: 22px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .opt-thumb {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1.5px solid rgba(143,95,62,0.2);
+    }
+
+    /* date input */
+    .date-input {
+      width: 100%;
+      border: 1.5px solid var(--caramel-light);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-family: "Manrope", sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--cocoa);
+      background: white;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      margin-bottom: 10px;
+    }
+    .date-input:focus {
+      border-color: var(--caramel);
+      box-shadow: 0 0 0 3px rgba(143,95,62,0.12);
+    }
+
+    /* size cards */
+    .size-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1.5px solid var(--caramel-light);
+      border-radius: 14px;
+      padding: 11px 14px;
+      background: white;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+      text-align: left;
+      width: 100%;
+      font-family: "Manrope", sans-serif;
+    }
+    .size-card:hover { border-color: var(--caramel); background: #fff8f2; }
+    .size-card.selected {
+      border-color: var(--caramel);
+      background: linear-gradient(145deg, #fff4e7, #ffeede);
+      box-shadow: 0 8px 22px -12px rgba(63,42,34,0.45);
+    }
+    .size-info { flex: 1; }
+    .size-name { font-size: 13px; font-weight: 700; color: var(--cocoa); }
+    .size-sub { font-size: 11px; color: rgba(63,42,34,0.65); margin-top: 1px; }
+    .size-price {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--caramel);
+    }
+
+    /* custom guests */
+    .custom-input {
+      width: 100%;
+      border: 1.5px solid var(--caramel-light);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--cocoa);
+      background: white;
+      outline: none;
+      font-family: "Manrope", sans-serif;
+      transition: border-color 0.2s;
+      margin-top: 8px;
+    }
+    .custom-input:focus { border-color: var(--caramel); }
+
+    /* ── NAV BUTTONS ── */
+    .nav-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      flex-shrink: 0;
+    }
+
+    .btn-back {
+      border: 1.5px solid var(--caramel-light);
+      border-radius: 14px;
+      padding: 12px 18px;
+      background: white;
+      font-family: "Manrope", sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(63,42,34,0.7);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+    .btn-back:hover { border-color: var(--caramel); color: var(--cocoa); }
+
+    .btn-next {
+      flex: 1;
+      border: none;
+      border-radius: 14px;
+      padding: 13px 18px;
+      background: var(--cocoa);
+      font-family: "Manrope", sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s, transform 0.15s;
+    }
+    .btn-next:hover:not(:disabled) { background: #2b1f1a; transform: translateY(-1px); }
+    .btn-next:disabled { opacity: 0.38; cursor: not-allowed; }
+
+    .btn-wa {
+      flex: 1;
+      border: none;
+      border-radius: 14px;
+      padding: 13px 18px;
+      background: #25d366;
+      font-family: "Manrope", sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-wa:hover { background: #1ebe5d; transform: translateY(-1px); }
+
+    /* summary box */
+    .summary-box {
+      background: white;
+      border: 1.5px solid var(--caramel-light);
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--cocoa);
+      margin-bottom: 10px;
+    }
+    .summary-box strong { font-weight: 700; }
+    .summary-price {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--caramel);
+      display: block;
+      margin-top: 6px;
+    }
+
+    /* step transition */
+    .step-content {
+      animation: stepIn 0.3s ease forwards;
+    }
+    @keyframes stepIn {
+      from { opacity: 0; transform: translateX(12px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ══ GALLERY PANEL ══ -->
+  <section class="gallery-panel">
+    <p class="badge">✦ Boutique Cake Shop Marrakech</p>
+    <h1>Gâteaux Signature Pour Vos Moments d'Exception</h1>
+    <p class="subtitle">Designs artisanaux · Détails premium · Livraison soignée à Marrakech</p>
+
+    <!-- Mobile strip -->
+    <div class="img-strip">
+      <img src="cakes/G%C3%A2teau%20Princesse.webp" alt="Gâteau Princesse" loading="eager" />
+      <img src="cakes/G%C3%A2teau%20Football.webp" alt="Gâteau Football" loading="lazy" />
+      <img src="cakes/G%C3%A2teau%20Licorne.webp" alt="Gâteau Licorne" loading="lazy" />
+    </div>
+
+    <!-- Desktop mosaic -->
+    <div class="img-mosaic">
+      <div class="mosaic-main"><img src="cakes/G%C3%A2teau%20Princesse.webp" alt="Gâteau Princesse" loading="eager" /></div>
+      <div class="mosaic-tr"><img src="cakes/G%C3%A2teau%20VIP.webp" alt="Gâteau VIP" loading="lazy" /></div>
+      <div class="mosaic-bl"><img src="cakes/G%C3%A2teau%20Licorne.webp" alt="Gâteau Licorne" loading="lazy" /></div>
+      <div class="mosaic-br"><img src="cakes/G%C3%A2teau%20Super-h%C3%A9ros.webp" alt="Gâteau Super-héros" loading="lazy" /></div>
+    </div>
+  </section>
+
+  <!-- ══ FORM PANEL ══ -->
+  <section class="form-panel" role="main" aria-label="Réservation">
+    <div class="drag-pill"></div>
+
+    <div class="form-header">
+      <h2>Réservation Personnalisée</h2>
+      <p>4 étapes simples · Confirmation WhatsApp instantanée</p>
+      <span class="price-badge">Prix incluant emballage premium + livraison Marrakech</span>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-bar-wrap" id="progressBar">
+      <div class="progress-seg" id="seg0"></div>
+      <div class="progress-seg" id="seg1"></div>
+      <div class="progress-seg" id="seg2"></div>
+      <div class="progress-seg" id="seg3"></div>
+      <div class="progress-seg" id="seg4"></div>
+    </div>
+
+    <!-- Wizard body -->
+    <div class="wizard-body" id="wizardBody"></div>
+
+    <!-- Nav -->
+    <div class="nav-row" id="navRow">
+      <button class="btn-back" id="btnBack">← Retour</button>
+      <button class="btn-next" id="btnNext" disabled>Continuer →</button>
+    </div>
+
+  </section>
+</div>
+
+<script>
+const WHATSAPP_NUMBER = "2126XXXXXXXX";
+
+const LOCAL_IMAGES = {
+  chiffre:   "cakes/G%C3%A2teau%20Chiffre.webp",
+  football:  "cakes/G%C3%A2teau%20Football.webp",
+  licorne:   "cakes/G%C3%A2teau%20Licorne.webp",
+  princesse: "cakes/G%C3%A2teau%20Princesse.webp",
+  superhero: "cakes/G%C3%A2teau%20Super-h%C3%A9ros.webp",
+  vip:       "cakes/G%C3%A2teau%20VIP.webp"
+};
+
+const themes = [
+  { id:1, name:"Princesse Pastel",   category:"enfants", target:"fille",  image:LOCAL_IMAGES.princesse },
+  { id:2, name:"Licorne Douce",      category:"enfants", target:"fille",  image:LOCAL_IMAGES.licorne   },
+  { id:3, name:"Aventure Football",  category:"enfants", target:"garcon", image:LOCAL_IMAGES.football  },
+  { id:4, name:"Super Héros",        category:"enfants", target:"garcon", image:LOCAL_IMAGES.superhero },
+  { id:5, name:"Élégance VIP",       category:"adultes", target:"femme",  image:LOCAL_IMAGES.vip       },
+  { id:6, name:"Style Chiffre",      category:"adultes", target:"femme",  image:LOCAL_IMAGES.chiffre   },
+  { id:7, name:"Classic VIP",        category:"adultes", target:"homme",  image:LOCAL_IMAGES.vip       },
+  { id:8, name:"Prestige Chiffre",   category:"adultes", target:"homme",  image:LOCAL_IMAGES.chiffre   },
+];
+
+const sizes = [
+  { value:"10",     label:"10 personnes",         sub:"1 étage",  price:900,  tier:"1", img:LOCAL_IMAGES.chiffre   },
+  { value:"25",     label:"25 personnes",         sub:"2 étages", price:1700, tier:"2", img:LOCAL_IMAGES.football  },
+  { value:"40",     label:"35 – 40 personnes",    sub:"3 étages", price:2500, tier:"3", img:LOCAL_IMAGES.princesse },
+  { value:"custom", label:"Plus de 40 personnes", sub:"Sur mesure — prix calculé automatiquement", price:0, tier:"xl", img:LOCAL_IMAGES.vip },
+];
+
+// ── State ──
+const state = {
+  step: 0,
+  date: "",
+  category: "",   // enfants|adultes
+  target: "",     // garcon|fille|homme|femme
+  themeId: null,
+  sizeValue: "",
+  customGuests: 0,
+  finalPrice: 0,
+};
+
+// ── Steps config ──
+// 0: Date  1: Category  2: Target  3: Theme  4: Size  5: Summary
+const TOTAL_STEPS = 5;
+
+const body    = document.getElementById("wizardBody");
+const btnBack = document.getElementById("btnBack");
+const btnNext = document.getElementById("btnNext");
+const navRow  = document.getElementById("navRow");
+
+function updateProgress() {
+  for (let i = 0; i < TOTAL_STEPS; i++) {
+    const seg = document.getElementById("seg" + i);
+    if (!seg) continue;
+    seg.className = "progress-seg";
+    if (i < state.step) seg.classList.add("done");
+    else if (i === state.step) seg.classList.add("active");
+  }
+}
+
+function renderStep() {
+  updateProgress();
+  body.innerHTML = "";
+  const div = document.createElement("div");
+  div.className = "step-content";
+  div.style.flex = "1";
+  div.style.display = "flex";
+  div.style.flexDirection = "column";
+  div.style.minHeight = "0";
+  div.style.overflow = "hidden";
+
+  // Back button visibility
+  btnBack.style.display = state.step === 0 ? "none" : "";
+
+  if (state.step === 0) renderDate(div);
+  else if (state.step === 1) renderCategory(div);
+  else if (state.step === 2) renderTarget(div);
+  else if (state.step === 3) renderTheme(div);
+  else if (state.step === 4) renderSize(div);
+  else if (state.step === 5) renderSummary(div);
+
+  body.appendChild(div);
+}
+
+// ── STEP 0: Date ──
+function renderDate(div) {
+  btnNext.textContent = "Continuer →";
+  div.innerHTML = `
+    <p class="step-label">Étape 1 sur 5</p>
+    <h3 class="step-question">📅 Quelle est la date de votre événement ?</h3>
+    <input type="date" class="date-input" id="dateInput" min="${todayISO()}" value="${state.date}" />
+    <p style="font-size:11px;color:rgba(63,42,34,0.6);margin-top:4px;">Commande minimum 3 jours à l'avance.</p>
+  `;
+  const inp = div.querySelector("#dateInput");
+  inp.addEventListener("change", () => {
+    state.date = inp.value;
+    btnNext.disabled = !state.date;
+  });
+  btnNext.disabled = !state.date;
+}
+
+// ── STEP 1: Category ──
+function renderCategory(div) {
+  div.innerHTML = `
+    <p class="step-label">Étape 2 sur 5</p>
+    <h3 class="step-question">🎂 Pour qui est ce gâteau ?</h3>
+    <div class="options-grid cols-2" style="flex:1;align-content:start;gap:10px;">
+      <button class="opt-btn${state.category==='enfants'?' selected':''}" data-v="enfants">
+        <span class="opt-icon">🧒</span><span>Enfants<br><small style="font-weight:400;font-size:11px;opacity:.7">Moins de 14 ans</small></span>
+      </button>
+      <button class="opt-btn${state.category==='adultes'?' selected':''}" data-v="adultes">
+        <span class="opt-icon">🎉</span><span>Adultes</span>
+      </button>
+    </div>
+  `;
+  div.querySelectorAll(".opt-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      // if category changed, reset downstream
+      if (state.category !== btn.dataset.v) {
+        state.target = "";
+        state.themeId = null;
+        state.sizeValue = "";
+        state.finalPrice = 0;
+      }
+      state.category = btn.dataset.v;
+      div.querySelectorAll(".opt-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      btnNext.disabled = false;
+    });
+  });
+  btnNext.disabled = !state.category;
+}
+
+// ── STEP 2: Target ──
+function renderTarget(div) {
+  const isKids = state.category === "enfants";
+  const opts = isKids
+    ? [{ v:"garcon", icon:"⚽", label:"Garçon" }, { v:"fille", icon:"👑", label:"Fille" }]
+    : [{ v:"homme", icon:"🕴️", label:"Homme" }, { v:"femme", icon:"💐", label:"Femme" }];
+
+  div.innerHTML = `
+    <p class="step-label">Étape 3 sur 5</p>
+    <h3 class="step-question">${isKids ? "👦👧 Garçon ou Fille ?" : "🎊 Pour un homme ou une femme ?"}</h3>
+    <div class="options-grid cols-2" style="flex:1;align-content:start;gap:10px;">
+      ${opts.map(o => `
+        <button class="opt-btn${state.target===o.v?' selected':''}" data-v="${o.v}">
+          <span class="opt-icon">${o.icon}</span><span>${o.label}</span>
+        </button>
+      `).join("")}
+    </div>
+  `;
+  div.querySelectorAll(".opt-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (state.target !== btn.dataset.v) {
+        state.themeId = null;
+        state.sizeValue = "";
+        state.finalPrice = 0;
+      }
+      state.target = btn.dataset.v;
+      div.querySelectorAll(".opt-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      btnNext.disabled = false;
+    });
+  });
+  btnNext.disabled = !state.target;
+}
+
+// ── STEP 3: Theme ──
+function renderTheme(div) {
+  const filtered = themes.filter(t => t.category === state.category && t.target === state.target);
+  div.innerHTML = `
+    <p class="step-label">Étape 4 sur 5</p>
+    <h3 class="step-question">🎨 Choisissez un thème</h3>
+    <div class="options-grid cols-2" style="flex:1;align-content:start;gap:8px;overflow:auto;">
+      ${filtered.map(t => `
+        <button class="opt-btn${state.themeId===t.id?' selected':''}" data-v="${t.id}" style="align-items:center;">
+          <img src="${t.image}" alt="${t.name}" class="opt-thumb" />
+          <span style="font-size:12px;">${t.name}</span>
+        </button>
+      `).join("")}
+    </div>
+  `;
+  div.querySelectorAll(".opt-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      state.themeId = Number(btn.dataset.v);
+      div.querySelectorAll(".opt-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      btnNext.disabled = false;
+    });
+  });
+  btnNext.disabled = !state.themeId;
+}
+
+// ── STEP 4: Size ──
+function renderSize(div) {
+  div.innerHTML = `
+    <p class="step-label">Étape 5 sur 5</p>
+    <h3 class="step-question">👥 Combien d'invités ?</h3>
+    <div style="flex:1;overflow:auto;display:flex;flex-direction:column;gap:8px;">
+      ${sizes.map(s => `
+        <button class="size-card${state.sizeValue===s.value?' selected':''}" data-v="${s.value}" data-price="${s.price}">
+          <div class="size-info">
+            <div class="size-name">${s.label}</div>
+            <div class="size-sub">${s.sub}</div>
+          </div>
+          <div class="size-price">${s.price ? s.price+' DH' : 'Sur devis'}</div>
+        </button>
+      `).join("")}
+      <div id="customWrap" style="display:${state.sizeValue==='custom'?'block':'none'}">
+        <input type="number" class="custom-input" id="customInp" min="41" placeholder="Nombre exact d'invités (min. 41)" value="${state.customGuests||''}" />
+        <p id="customPrice" style="font-size:12px;margin-top:6px;color:var(--caramel);font-weight:700;"></p>
+      </div>
+    </div>
+  `;
+
+  btnNext.textContent = "Voir le récapitulatif →";
+
+  const customWrap = div.querySelector("#customWrap");
+  const customInp  = div.querySelector("#customInp");
+  const customPrice = div.querySelector("#customPrice");
+
+  function calcCustom() {
+    const g = parseInt(customInp.value || "0");
+    if (g >= 41) {
+      state.customGuests = g;
+      state.finalPrice = 2500 + (g - 40) * 90;
+      customPrice.textContent = `Tarif estimé: ${state.finalPrice} DH`;
+      btnNext.disabled = false;
+    } else {
+      state.finalPrice = 0;
+      customPrice.textContent = g ? "Minimum 41 invités" : "";
+      btnNext.disabled = true;
+    }
+  }
+
+  if (state.sizeValue === "custom") {
+    calcCustom();
+  } else {
+    btnNext.disabled = !state.sizeValue;
+  }
+
+  div.querySelectorAll(".size-card").forEach(btn => {
+    btn.addEventListener("click", () => {
+      state.sizeValue = btn.dataset.v;
+      div.querySelectorAll(".size-card").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+
+      if (state.sizeValue === "custom") {
+        customWrap.style.display = "block";
+        state.finalPrice = 0;
+        btnNext.disabled = true;
+        calcCustom();
+      } else {
+        customWrap.style.display = "none";
+        state.finalPrice = parseInt(btn.dataset.price);
+        btnNext.disabled = false;
+      }
+    });
+  });
+
+  customInp && customInp.addEventListener("input", calcCustom);
+}
+
+// ── STEP 5: Summary ──
+function renderSummary(div) {
+  const catLabel = state.category === "enfants" ? "Enfants" : "Adultes";
+  const targetMap = {garcon:"Garçon", fille:"Fille", homme:"Homme", femme:"Femme"};
+  const theme = themes.find(t => t.id === state.themeId);
+  const sizeObj = sizes.find(s => s.value === state.sizeValue);
+  const guestsLabel = state.sizeValue === "custom" ? `${state.customGuests} personnes` : sizeObj?.label;
+
+  navRow.innerHTML = `
+    <button class="btn-back" id="btnBackSum">← Modifier</button>
+    <button class="btn-wa" id="btnWA">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Confirmer via WhatsApp
+    </button>
+  `;
+
+  div.innerHTML = `
+    <p class="step-label">Récapitulatif de votre commande</p>
+    <div class="summary-box" style="flex:1;overflow:auto;">
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;">
+        <img src="${theme?.image || LOCAL_IMAGES.princesse}" alt="Thème" style="width:56px;height:56px;border-radius:10px;object-fit:cover;border:1.5px solid rgba(143,95,62,0.2);" />
+        <div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--cocoa);">${theme?.name || "-"}</div>
+          <div style="font-size:11px;opacity:.65;margin-top:2px;">${catLabel} · ${targetMap[state.target]||""}</div>
+        </div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <tr><td style="padding:4px 0;opacity:.65;width:38%;">📅 Date</td><td style="font-weight:600;">${formatDate(state.date)}</td></tr>
+        <tr><td style="padding:4px 0;opacity:.65;">👥 Invités</td><td style="font-weight:600;">${guestsLabel}</td></tr>
+        <tr><td style="padding:4px 0;opacity:.65;">📦 Format</td><td style="font-weight:600;">${sizeObj?.sub || ""}</td></tr>
+      </table>
+      <span class="summary-price">${state.finalPrice} DH <small style="font-size:12px;font-weight:500;font-family:'Manrope',sans-serif;opacity:.7;">tout compris</small></span>
+    </div>
+  `;
+
+  document.getElementById("btnBackSum").addEventListener("click", () => {
+    state.step = 4;
+    renderStep();
+  });
+
+  document.getElementById("btnWA").addEventListener("click", () => {
+    const msg = [
+      "Bonjour, je souhaite confirmer une réservation de gâteau :",
+      "",
+      `📅 Date : ${formatDate(state.date)}`,
+      `🎂 Catégorie : ${catLabel}`,
+      `👤 Genre/Type : ${targetMap[state.target] || state.target}`,
+      `🎨 Thème : ${theme?.name || "-"}`,
+      `👥 Invités : ${guestsLabel}`,
+      `💰 Tarif final : ${state.finalPrice} DH (emballage + livraison Marrakech inclus)`,
+    ].join("\n");
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank", "noopener,noreferrer");
+  });
+
+  // hide the default nav row
+  btnBack.style.display = "none";
+  btnNext.style.display = "none";
+}
+
+// ── Nav handlers ──
+btnNext.addEventListener("click", () => {
+  if (btnNext.disabled) return;
+  if (state.step < 4) { state.step++; renderStep(); }
+  else if (state.step === 4) { state.step = 5; renderStep(); }
+});
+
+btnBack.addEventListener("click", () => {
+  if (state.step > 0) { state.step--; renderStep(); }
+});
+
+// ── Helpers ──
+function todayISO() {
+  const d = new Date();
+  d.setDate(d.getDate() + 3); // min 3 days ahead
+  return d.toISOString().split("T")[0];
+}
+
+function formatDate(iso) {
+  if (!iso) return "-";
+  const [y,m,d] = iso.split("-");
+  const months = ["Jan","Fév","Mar","Avr","Mai","Juin","Juil","Août","Sep","Oct","Nov","Déc"];
+  return `${d} ${months[parseInt(m)-1]} ${y}`;
+}
+
+// ── Init ──
+renderStep();
+</script>
+</body>
+</html>
